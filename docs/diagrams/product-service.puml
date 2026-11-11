@@ -1,0 +1,85 @@
+@startuml product-service
+title Product Service – model danych
+skinparam classAttributeIconSize 0
+hide empty methods
+
+package "Product Service" {
+
+  enum ProductStatus {
+    DRAFT
+    ACTIVE
+    ARCHIVED
+  }
+
+  class Category {
+    -Long id
+    -String name
+    -Category parent
+    -List<Category> children
+  }
+
+  class Product {
+    -Long id
+    -String name
+    -ProductStatus status
+    -BigDecimal basePrice
+    -BigDecimal vatRate
+    -boolean configurable
+    -Category category
+    -List<ProductOption> options
+    -List<ProductVariant> variants
+    -List<ProductAttribute> attributes
+    +calculatePrice(List<ProductOptionValue> selected) : BigDecimal
+    +isPurchasable() : boolean
+  }
+
+  class ProductOption {
+    -Long id
+    -String name
+    -boolean required
+    -List<ProductOptionValue> values
+    +getDefaultValue() : ProductOptionValue
+  }
+
+  class ProductOptionValue {
+    -Long id
+    -String name
+    -BigDecimal priceDelta
+    -boolean isDefault
+  }
+
+  class ProductVariant {
+    -Long id
+    -String sku
+    -BigDecimal price
+    -int stock
+    -List<ProductOptionValue> optionValues
+    +isInStock() : boolean
+  }
+
+  class ProductAttribute {
+    -Long id
+    -String name
+    -String value
+  }
+}
+
+Category "0..1" o-- "0..*" Category : parent
+Category "1" --> "0..*" Product : zawiera
+Product --> ProductStatus : status
+Product "1" *-- "0..*" ProductOption : options
+ProductOption "1" *-- "1..*" ProductOptionValue : values
+Product "1" *-- "0..*" ProductVariant : variants
+ProductVariant "0..*" --> "1..*" ProductOptionValue : kombinacja
+Product "1" *-- "0..*" ProductAttribute : attributes
+
+note right of Product
+  configurable = true  → cena = basePrice + Σ priceDelta
+  ma warianty          → cena = variant.price
+  brak opcji/wariantów → cena = basePrice
+
+  isPurchasable() = status == ACTIVE
+  produktów nie usuwamy – archiwizujemy
+end note
+
+@enduml

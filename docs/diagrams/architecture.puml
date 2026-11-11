@@ -1,0 +1,69 @@
+@startuml architecture
+title Architektura serwisów – draft
+
+skinparam componentStyle rectangle
+skinparam nodesep 70
+skinparam ranksep 70
+skinparam ArrowFontSize 12
+skinparam ArrowColor #555555
+skinparam legendBackgroundColor #FAFAFA
+skinparam legendFontSize 12
+
+actor "Klient" as user
+component "Frontend" as fe
+component "BFF" as bff
+
+component "Keycloak" as kc #FDE3D8
+cloud "API faktur" as inv #FDE3D8
+
+package "Sieć wewnętrzna" {
+  component "Cart Service\n(Task 2)" as cs
+  component "Product Service" as ps
+  component "Order Service\n(Task 3 + 4)" as os
+
+  database "cart-db" as cdb
+  database "product-db" as pdb
+  database "order-db" as odb
+  storage "PDF storage\n(do decyzji)" as st
+}
+
+user -down-> fe
+fe -down-> bff : 1
+fe .right.> kc : 2
+bff -right-> kc : 3
+
+bff -down-> cs : 4
+bff -down-> ps : 5
+bff -down-> os : 6
+
+cs -right-> ps : 7
+os -left-> ps : 8
+os .left.> cs : 9
+
+os -right-> inv : 10
+os -down-> st : 11
+
+cs -down-> cdb
+ps -down-> pdb
+os -down-> odb
+
+legend bottom
+|= Nr |= Połączenie |= Po co / kiedy |
+| 1 | Frontend → BFF | wszystkie operacje użytkownika (HTTPS, cookie HttpOnly) |
+| 2 | Frontend → Keycloak | przekierowanie na stronę logowania |
+| 3 | BFF → Keycloak | OIDC: wymiana kodu na tokeny, odświeżanie |
+| 4 | BFF → Cart Service | koszyk (REST + JWT) |
+| 5 | BFF → Product Service | katalog, konfigurator (REST + JWT) |
+| 6 | BFF → Order Service | zamówienia, anulowanie, faktury (REST + JWT) |
+| 7 | Cart → Product | walidacja konfiguracji, aktualne ceny przy GET /cart |
+| 8 | Order → Product | walidacja, ceny, vatRate – tylko przy składaniu zamówienia |
+| 9 | Order → Cart | checkout: pobranie pozycji, koszyk → CHECKED_OUT (przyszłość) |
+| 10 | Order → API faktur | wystawienie faktury, pobranie PDF |
+| 11 | Order → PDF storage | zapis i odczyt PDF |
+
+Linia przerywana = przekierowanie lub przyszłe połączenie.
+Kolor pomarańczowy = system zewnętrzny.
+Serwisy walidują JWT lokalnie (klucz publiczny z JWKS Keycloak, cache).
+endlegend
+
+@enduml

@@ -2,9 +2,6 @@ package com.ecommerce.model;
 
 import com.ecommerce.model.exception.InvalidValueException;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-
 final class Validate {
 
     private Validate() {

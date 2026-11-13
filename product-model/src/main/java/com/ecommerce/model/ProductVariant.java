@@ -5,8 +5,9 @@ import com.ecommerce.model.valueObjects.*;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @ToString
@@ -46,7 +47,6 @@ public class ProductVariant {
         this.price = ProductPrice.fromGross(newGross, price.vatRate());
     }
 
-    /** Wołane tylko przez Product przy zmianie stawki VAT: brutto zostaje. */
     void applyVatRate(VatRate newRate) {
         this.price = price.withVatRateKeepingGross(newRate);
     }

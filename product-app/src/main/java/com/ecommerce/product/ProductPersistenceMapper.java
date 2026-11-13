@@ -3,11 +3,7 @@ package com.ecommerce.product;
 import com.ecommerce.model.*;
 import com.ecommerce.model.valueObjects.*;
 import com.ecommerce.product.entity.*;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +11,7 @@ import java.util.Map;
 
 @Mapper(
         componentModel = "spring",
-        // używa addOption/addVariant/addAttribute/addValue, które ustawiają powiązania zwrotne
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
-        // niezmapowane pole encji = błąd kompilacji, a nie cichy null w bazie
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public abstract class ProductPersistenceMapper {
@@ -25,18 +19,18 @@ public abstract class ProductPersistenceMapper {
     @Mapping(target = "basePriceNet", source = "basePrice.net.value")
     @Mapping(target = "basePriceGross", source = "basePrice.gross.value")
     @Mapping(target = "vatRate", source = "basePrice.vatRate.value")
-    @Mapping(target = "category", ignore = true) // ustawia adapter, patrz niżej
-    @Mapping(target = "variants", dependsOn = "options") // najpierw opcje, potem warianty
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "variants", dependsOn = "options")
     public abstract ProductEntity toEntity(Product product, @Context MappingContext context);
 
-    @Mapping(target = "product", ignore = true) // ustawia ProductEntity.addOption
+    @Mapping(target = "product", ignore = true)
     protected abstract ProductOptionEntity toEntity(ProductOption option,
                                                     @Context MappingContext context);
 
     @Mapping(target = "priceDeltaNet", source = "priceDelta.net")
     @Mapping(target = "priceDeltaGross", source = "priceDelta.gross")
     @Mapping(target = "defaultValue", source = "default")
-    @Mapping(target = "option", ignore = true) // ustawia ProductOptionEntity.addValue
+    @Mapping(target = "option", ignore = true)
     protected abstract ProductOptionValueEntity toEntity(ProductOptionValue value,
                                                          @Context MappingContext context);
 
@@ -44,15 +38,13 @@ public abstract class ProductPersistenceMapper {
     @Mapping(target = "priceNet", source = "price.net.value")
     @Mapping(target = "priceGross", source = "price.gross.value")
     @Mapping(target = "stock", source = "stock.quantity")
-    @Mapping(target = "product", ignore = true) // ustawia ProductEntity.addVariant
+    @Mapping(target = "product", ignore = true)
     protected abstract ProductVariantEntity toEntity(ProductVariant variant,
                                                      @Context MappingContext context);
 
-    @Mapping(target = "product", ignore = true) // ustawia ProductEntity.addAttribute
+    @Mapping(target = "product", ignore = true)
     protected abstract ProductAttributeEntity toEntity(ProductAttribute attribute,
                                                        @Context MappingContext context);
-
-    // ===================== encja -> model (ręcznie) =====================
 
     public Product toDomain(ProductEntity entity) {
         VatRate vatRate = new VatRate(entity.getVatRate());
@@ -84,7 +76,6 @@ public abstract class ProductPersistenceMapper {
         );
     }
 
-    /** Mapuje kategorię razem z przodkami. Dzieci nie są ładowane. */
     public Category toDomain(CategoryEntity entity) {
         Category category = new Category(entity.getId(), entity.getName());
         if (entity.getParent() != null) {
@@ -111,7 +102,6 @@ public abstract class ProductPersistenceMapper {
 
     private ProductVariant toDomain(ProductVariantEntity entity, VatRate vatRate,
                                     Map<Long, ProductOptionValue> valuesById) {
-        // te same instancje wartości, które są pod opcjami
         List<ProductOptionValue> values = entity.getOptionValues().stream()
                 .map(v -> valuesById.get(v.getId()))
                 .toList();

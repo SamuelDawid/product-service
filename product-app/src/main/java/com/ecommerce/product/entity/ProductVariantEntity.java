@@ -20,8 +20,11 @@ public class ProductVariantEntity extends BaseEntity {
     @Column(nullable = false, unique = true, length = 64)
     private String sku;
 
-    @Column(nullable = false, precision = 19, scale = 2)
-    private BigDecimal price;
+    @Column(name = "price_net", nullable = false, precision = 19, scale = 2)
+    private BigDecimal priceNet;
+
+    @Column(name = "price_gross", nullable = false, precision = 19, scale = 2)
+    private BigDecimal priceGross;
 
     @Column(nullable = false)
     private int stock;

@@ -1,7 +1,7 @@
 package com.ecommerce.product.entity;
 
 
-import model.enums.ProductStatus;
+import com.ecommerce.model.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,8 +26,11 @@ public class ProductEntity extends BaseEntity {
     @Column(nullable = false, length = 20)
     private ProductStatus status;
 
-    @Column(name = "base_price", nullable = false, precision = 19, scale = 2)
-    private BigDecimal basePrice;
+    @Column(name = "base_price_net", nullable = false, precision = 19, scale = 2)
+    private BigDecimal basePriceNet;
+
+    @Column(name = "base_price_gross", nullable = false, precision = 19, scale = 2)
+    private BigDecimal basePriceGross;
 
     @Column(name = "vat_rate", nullable = false, precision = 5, scale = 4)
     private BigDecimal vatRate;
@@ -39,7 +42,6 @@ public class ProductEntity extends BaseEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
-    // Bez settera: podmiana kolekcji przy orphanRemoval kończy się wyjątkiem Hibernate
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductOptionEntity> options = new ArrayList<>();

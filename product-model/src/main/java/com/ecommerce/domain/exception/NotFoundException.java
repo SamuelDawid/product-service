@@ -1,4 +1,4 @@
-package com.ecommerce.model.exception;
+package com.ecommerce.domain.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

@@ -1,9 +1,7 @@
-package com.ecommerce.model;
+package com.ecommerce.domain;
 
 import lombok.Getter;
 import lombok.ToString;
-
-import java.util.Objects;
 
 @ToString
 @Getter

@@ -1,4 +1,4 @@
-package com.ecommerce.model.enums;
+package com.ecommerce.domain.enums;
 
 public enum ProductStatus {
     DRAFT,ACTIVE,ARCHIVED

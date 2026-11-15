@@ -1,6 +1,6 @@
-package com.ecommerce.model;
+package com.ecommerce.domain;
 
-import com.ecommerce.model.exception.BusinessRuleException;
+import com.ecommerce.domain.exception.BusinessRuleException;
 import lombok.Getter;
 import lombok.ToString;
 

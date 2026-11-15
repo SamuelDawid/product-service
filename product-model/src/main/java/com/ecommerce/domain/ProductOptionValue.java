@@ -1,12 +1,10 @@
-package com.ecommerce.model;
+package com.ecommerce.domain;
 
-import com.ecommerce.model.valueObjects.PriceDelta;
-import com.ecommerce.model.valueObjects.VatRate;
+import com.ecommerce.domain.valueObjects.PriceDelta;
+import com.ecommerce.domain.valueObjects.VatRate;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.util.Objects;
 @ToString
 @Getter
 public class ProductOptionValue {
@@ -31,7 +29,9 @@ public class ProductOptionValue {
         this.priceDelta = Validate.notNull(newDelta, "Price delta");
     }
 
-    /** Wołane tylko przez Product przy zmianie stawki VAT: brutto zostaje. */
+    /**
+     * Wołane tylko przez Product przy zmianie stawki VAT: brutto zostaje.
+     */
     void applyVatRate(VatRate newRate) {
         this.priceDelta = PriceDelta.fromGross(priceDelta.gross(), newRate);
     }

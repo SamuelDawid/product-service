@@ -1,4 +1,4 @@
-package com.ecommerce.model.valueObjects;
+package com.ecommerce.domain.valueObjects;
 
 public record ProductName(String value) {
     public ProductName {

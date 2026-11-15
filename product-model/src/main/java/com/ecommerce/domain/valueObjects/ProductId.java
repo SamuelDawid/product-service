@@ -1,4 +1,4 @@
-package com.ecommerce.model.valueObjects;
+package com.ecommerce.domain.valueObjects;
 
 public record ProductId(Long value) {
     public ProductId {

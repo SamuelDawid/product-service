@@ -1,6 +1,6 @@
-package com.ecommerce.model.valueObjects;
+package com.ecommerce.domain.valueObjects;
 
-import com.ecommerce.model.exception.InvalidValueException;
+import com.ecommerce.domain.exception.InvalidValueException;
 
 import java.math.BigDecimal;
 

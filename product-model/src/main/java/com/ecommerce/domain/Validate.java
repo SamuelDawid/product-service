@@ -1,6 +1,6 @@
-package com.ecommerce.model;
+package com.ecommerce.domain;
 
-import com.ecommerce.model.exception.InvalidValueException;
+import com.ecommerce.domain.exception.InvalidValueException;
 
 final class Validate {
 

@@ -1,8 +1,8 @@
-package com.ecommerce.model;
+package com.ecommerce.domain;
 
-import com.ecommerce.model.enums.ProductStatus;
-import com.ecommerce.model.exception.BusinessRuleException;
-import com.ecommerce.model.valueObjects.*;
+import com.ecommerce.domain.enums.ProductStatus;
+import com.ecommerce.domain.exception.BusinessRuleException;
+import com.ecommerce.domain.valueObjects.*;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -12,10 +12,10 @@ import java.util.*;
 @Getter
 @ToString
 public class Product {
-    private final ProductId id; // null = jeszcze niezapisany
+    private final ProductId id;
     private ProductName name;
     private ProductStatus status;
-    private ProductPrice basePrice; // zawiera też stawkę VAT
+    private ProductPrice basePrice;
     private final boolean configurable;
     private Category category;
     private final List<ProductOption> options = new ArrayList<>();
@@ -125,6 +125,13 @@ public class Product {
 
     public void archive() {
         this.status = ProductStatus.ARCHIVED;
+    }
+
+    public void restore() {
+        if (status != ProductStatus.ARCHIVED) {
+            throw new BusinessRuleException("Only archived product can be restored");
+        }
+        this.status = ProductStatus.DRAFT;
     }
 
     public void addOption(ProductOption option) {

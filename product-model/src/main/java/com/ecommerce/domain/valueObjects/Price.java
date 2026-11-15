@@ -1,4 +1,4 @@
-package com.ecommerce.model.valueObjects;
+package com.ecommerce.domain.valueObjects;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

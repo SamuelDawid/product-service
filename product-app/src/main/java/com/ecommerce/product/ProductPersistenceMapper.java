@@ -1,7 +1,7 @@
 package com.ecommerce.product;
 
-import com.ecommerce.model.*;
-import com.ecommerce.model.valueObjects.*;
+import com.ecommerce.domain.*;
+import com.ecommerce.domain.valueObjects.*;
 import com.ecommerce.product.entity.*;
 import org.mapstruct.*;
 

@@ -1,7 +1,7 @@
 package com.ecommerce.product.entity;
 
 
-import com.ecommerce.model.enums.ProductStatus;
+import com.ecommerce.domain.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

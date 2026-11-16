@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@ToString
+@ToString(exclude = {"parent", "children"})
 public class Category {
 
     private final Long id;

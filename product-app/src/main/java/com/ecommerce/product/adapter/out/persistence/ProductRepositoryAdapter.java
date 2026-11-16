@@ -1,10 +1,10 @@
 package com.ecommerce.product.adapter.out.persistence;
 
-import com.ecommerce.domain.PageResult;
-import com.ecommerce.domain.Product;
-import com.ecommerce.domain.exception.ProductNotFoundException;
-import com.ecommerce.domain.ports.ProductRepositoryPort;
-import com.ecommerce.domain.valueObjects.ProductId;
+import com.ecommerce.model.PageResult;
+import com.ecommerce.model.Product;
+import com.ecommerce.model.exception.ProductNotFoundException;
+import com.ecommerce.model.ports.ProductRepositoryPort;
+import com.ecommerce.model.valueobjects.ProductId;
 import com.ecommerce.product.MappingContext;
 import com.ecommerce.product.ProductPersistenceMapper;
 import com.ecommerce.product.entity.CategoryEntity;

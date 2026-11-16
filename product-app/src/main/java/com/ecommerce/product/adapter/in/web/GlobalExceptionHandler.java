@@ -1,8 +1,8 @@
 package com.ecommerce.product.adapter.in.web;
 
-import com.ecommerce.domain.exception.BusinessRuleException;
-import com.ecommerce.domain.exception.InvalidValueException;
-import com.ecommerce.domain.exception.NotFoundException;
+import com.ecommerce.model.exception.BusinessRuleException;
+import com.ecommerce.model.exception.InvalidValueException;
+import com.ecommerce.model.exception.NotFoundException;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

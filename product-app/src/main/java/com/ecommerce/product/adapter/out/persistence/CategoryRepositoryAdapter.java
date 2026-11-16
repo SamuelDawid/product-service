@@ -1,7 +1,7 @@
 package com.ecommerce.product.adapter.out.persistence;
 
-import com.ecommerce.domain.Category;
-import com.ecommerce.domain.ports.CategoryRepositoryPort;
+import com.ecommerce.model.Category;
+import com.ecommerce.model.ports.CategoryRepositoryPort;
 import com.ecommerce.product.ProductPersistenceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

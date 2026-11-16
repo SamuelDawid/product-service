@@ -8,7 +8,9 @@ import com.ecommerce.api.dto.response.PriceResponse;
 import com.ecommerce.api.dto.response.ProductResponse;
 import com.ecommerce.api.dto.response.ProductSummaryResponse;
 import com.ecommerce.api.service.ProductService;
-import com.ecommerce.domain.exception.ProductNotFoundException;
+import com.ecommerce.model.exception.BusinessRuleException;
+import com.ecommerce.model.exception.InvalidValueException;
+import com.ecommerce.model.exception.ProductNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -145,6 +147,40 @@ class ProductControllerTest {
         verify(productService).archiveProduct(1L);
     }
 
+    @Test
+    void givenInvalidValueInService_whenCreateProduct_thenReturns400() throws Exception {
+        // given
+        when(productService.createProduct(any(CreateProductRequest.class)))
+                .thenThrow(new InvalidValueException("Price can not be null or negative"));
+        String body = """
+                {
+                  "name": "Laptop Pro 14",
+                  "grossPrice": 4999.99,
+                  "vatRate": 0.23,
+                  "configurable": false,
+                  "categoryId": 5
+                }
+                """;
+
+        // when / then
+        mockMvc.perform(post("/api/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("Invalid value"));
+    }
+
+    @Test
+    void givenBusinessRuleViolation_whenArchiveProduct_thenReturns409() throws Exception {
+        // given
+        doThrow(new BusinessRuleException("Archived product can not be activated"))
+                .when(productService).archiveProduct(1L);
+
+        // when / then
+        mockMvc.perform(post("/api/products/1/archive"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.title").value("Business rule violated"));
+    }
 
     private static ProductResponse laptopResponse() {
         return new ProductResponse(1L, "Laptop Pro 14", "DRAFT", false,

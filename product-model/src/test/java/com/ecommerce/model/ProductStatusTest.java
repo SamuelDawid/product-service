@@ -1,10 +1,8 @@
 package com.ecommerce.model;
 
-import com.ecommerce.domain.Category;
-import com.ecommerce.domain.Product;
-import com.ecommerce.domain.enums.ProductStatus;
-import com.ecommerce.domain.exception.BusinessRuleException;
-import com.ecommerce.domain.valueObjects.*;
+import com.ecommerce.model.enums.ProductStatus;
+import com.ecommerce.model.exception.BusinessRuleException;
+import com.ecommerce.model.valueobjects.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;

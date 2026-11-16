@@ -1,4 +1,4 @@
-# com.ecommerce.domain.Product Service
+# com.ecommerce.model.Product Service
 
 Mikroserwis katalogu produktów sklepu e-commerce z elektroniką.
 
@@ -12,7 +12,7 @@ Odpowiada za:
 ## Miejsce w systemie
 
 Frontend nie komunikuje się z serwisem bezpośrednio – wszystkie żądania przechodzą przez BFF.
-Z com.ecommerce.domain.Product Service korzystają również Cart Service i Order Service.
+Z com.ecommerce.model.Product Service korzystają również Cart Service i Order Service.
 
 Diagram architektury: [`docs/diagrams/architecture.puml`](docs/diagrams/architecture.puml)
 

@@ -1,7 +1,7 @@
 package com.ecommerce.product.adapter.out.persistence;
 
 
-import com.ecommerce.domain.Category;
+import com.ecommerce.model.Category;
 import com.ecommerce.product.entity.CategoryEntity;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;

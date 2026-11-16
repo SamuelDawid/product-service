@@ -1,15 +1,11 @@
 package com.ecommerce.product.adapter.out.persistence;
 
-import com.ecommerce.domain.Category;
-import com.ecommerce.domain.PageResult;
-import com.ecommerce.domain.Product;
-import com.ecommerce.domain.enums.ProductStatus;
-import com.ecommerce.domain.valueObjects.*;
+import com.ecommerce.model.Category;
+import com.ecommerce.model.PageResult;
+import com.ecommerce.model.Product;
+import com.ecommerce.model.enums.ProductStatus;
+import com.ecommerce.model.valueobjects.*;
 import com.ecommerce.product.entity.CategoryEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,11 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
@@ -32,7 +29,7 @@ class ProductRepositoryAdapterTest {
     private ProductRepositoryAdapter productRepository;
 
     @Autowired
-    private  CategoryRepositoryAdapter categoryRepository;
+    private CategoryRepositoryAdapter categoryRepository;
 
     @Autowired
     private CategoryJpaRepository categoryJpaRepository;
@@ -43,16 +40,17 @@ class ProductRepositoryAdapterTest {
     private Category laptops;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         CategoryEntity entity = new CategoryEntity();
         entity.setName("Laptopy");
         Long categoryId = categoryJpaRepository.saveAndFlush(entity).getId();
         laptops = categoryRepository.findById(categoryId).orElseThrow();
     }
+
     @Test
-    void givenNewProduct_whenSave_thenAssignsIdAndStoresNetAndGrossPrice(){
+    void givenNewProduct_whenSave_thenAssignsIdAndStoresNetAndGrossPrice() {
         //given
-        Product product = laptop("Laptop Pro 14","4999.99");
+        Product product = laptop("Laptop Pro 14", "4999.99");
         //when
         Product saved = productRepository.save(product);
         //then
@@ -61,6 +59,7 @@ class ProductRepositoryAdapterTest {
         assertThat(saved.getBasePrice().gross().value()).isEqualByComparingTo("4999.99");
         assertThat(saved.getBasePrice().net().value()).isEqualByComparingTo("4065.03");
     }
+
     @Test
     void givenSavedProduct_whenFindById_thenReadsProductFromDatabase() {
         // given
@@ -128,6 +127,7 @@ class ProductRepositoryAdapterTest {
                 .extracting(product -> product.getName().value())
                 .containsExactly("Laptop A", "Laptop B");
     }
+
     private Product laptop(String name, String grossPrice) {
         return Product.standard(
                 new ProductName(name),

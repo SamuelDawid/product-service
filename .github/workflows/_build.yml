@@ -1,0 +1,15 @@
+name: build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Compile
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-java-maven
+      - name: Compile sources and tests
+        run: ./mvnw -B -ntp test-compile

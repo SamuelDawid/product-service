@@ -1,0 +1,15 @@
+name: .pre
+
+on:
+  workflow_call:
+
+jobs:
+  pre:
+    name: Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-java-maven
+      - name: Validate Maven project
+        run: ./mvnw -B -ntp validate

@@ -1,0 +1,39 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [stage]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre:
+    name: .pre
+    uses: ./.github/workflows/_pre.yml
+
+  build:
+    name: build
+    needs: pre
+    uses: ./.github/workflows/_build.yml
+
+  test:
+    name: test
+    needs: build
+    uses: ./.github/workflows/_test.yml
+
+  quality:
+    name: quality
+    needs: test
+    uses: ./.github/workflows/_quality.yml
+    secrets: inherit
+
+  package:
+    name: package
+    needs: quality
+    uses: ./.github/workflows/_package.yml

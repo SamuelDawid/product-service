@@ -32,6 +32,9 @@
         <logstash.version>9.0</logstash.version>
         <!-- trzymać zgodnie z wersją swagger-core używaną przez springdoc -->
         <swagger-annotations.version>2.2.52</swagger-annotations.version>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.organization>samueldawid</sonar.organization>
+        <sonar.projectKey>SamuelDawid_product-service</sonar.projectKey>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -78,7 +81,7 @@
 
     <build>
         <plugins>
-            <!-- dziedziczone przez wszystkie moduły – NIE nadpisywać w modułach -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -101,6 +104,26 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.13</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

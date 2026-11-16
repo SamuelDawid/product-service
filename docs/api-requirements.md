@@ -1,6 +1,6 @@
-# Product Service – wymagania innych serwisów
+# com.ecommerce.domain.Product Service – wymagania innych serwisów
 
-Dokument opisuje, czego od Product Service potrzebują pozostałe serwisy.
+Dokument opisuje, czego od com.ecommerce.domain.Product Service potrzebują pozostałe serwisy.
 To wymagania, a nie ostateczny kontrakt API – szczegóły (ścieżki, kształt JSON) mogą się zmienić w implementacji.
 
 ---

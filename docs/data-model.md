@@ -1,6 +1,6 @@
-# Product Service – model danych
+# com.ecommerce.domain.Product Service – model danych
 
-Dokument opisuje model danych Product Service i uzasadnia decyzje projektowe.
+Dokument opisuje model danych com.ecommerce.domain.Product Service i uzasadnia decyzje projektowe.
 Nie opisuje endpointów (patrz `api-requirements.md`) ani logiki serwisu.
 
 Diagram klas: [`diagrams/product-service.puml`](diagrams/product-service.puml)
@@ -27,7 +27,7 @@ Wzorcem odniesienia był model danych Shopify (GraphQL Admin API). Różnice są
 
 | Encja | Rola |
 |---|---|
-| `Category` | drzewo kategorii (`parent` → `children`), np. Elektronika → Komputery → Laptopy |
+| `CategoryEntity` | drzewo kategorii (`parent` → `children`), np. Elektronika → Komputery → Laptopy |
 | `Product` | jeden model dla wszystkich rodzajów towarów |
 | `ProductStatus` | stan produktu w katalogu: `DRAFT`, `ACTIVE`, `ARCHIVED` |
 | `ProductOption` | opcja wybierana przez klienta, np. „RAM”, „Procesor” |
@@ -41,7 +41,7 @@ Wzorcem odniesienia był model danych Shopify (GraphQL Admin API). Różnice są
 
 ### 3.1 Jeden `Product` zamiast klasy na każdy typ
 
-**Decyzja:** jedna encja `Product`; rodzaj produktu wyznacza relacja do `Category`.
+**Decyzja:** jedna encja `Product`; rodzaj produktu wyznacza relacja do `CategoryEntity`.
 
 **Dlaczego:**
 - Shopify robi tak samo: jeden obiekt `Product`, a typ to pole (`productType`, `category`).
@@ -87,11 +87,11 @@ Ceny są cenami **brutto** (sprzedaż B2C); kwoty netto i VAT wylicza się na fa
 
 ### 3.5 Cena i kopie danych
 
-Product Service jest **jedynym źródłem cen** w systemie:
+com.ecommerce.domain.Product Service jest **jedynym źródłem cen** w systemie:
 - Cart Service pobiera aktualne ceny przy każdym odczycie koszyka (ceny „żywe”),
 - Order Service pobiera je raz, przy składaniu zamówienia, i zapisuje kopię (ceny „zamrożone”).
 
-Dlatego Product Service nie musi przechowywać historii cen – historię przechowują zamówienia.
+Dlatego com.ecommerce.domain.Product Service nie musi przechowywać historii cen – historię przechowują zamówienia.
 
 ### 3.6 Status produktu zamiast usuwania
 
@@ -105,7 +105,7 @@ Dlatego Product Service nie musi przechowywać historii cen – historię przech
 
 **Dlaczego:**
 - koszyki i zamówienia przechowują `productId`, `variantId` i `optionValueId`; fizyczne usunięcie produktu
-  zamieniłoby te referencje w „wiszące” id, a Product Service nie umiałby odróżnić „nigdy nie istniał” od „wycofany”;
+  zamieniłoby te referencje w „wiszące” id, a com.ecommerce.domain.Product Service nie umiałby odróżnić „nigdy nie istniał” od „wycofany”;
 - `DRAFT` pozwala przygotować produkt (opcje, warianty, parametry) przed publikacją;
 - Shopify stosuje ten sam podział: `ACTIVE`, `ARCHIVED`, `DRAFT`.
 

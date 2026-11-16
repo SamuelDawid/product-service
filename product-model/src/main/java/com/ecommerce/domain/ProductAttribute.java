@@ -1,10 +1,8 @@
 package com.ecommerce.domain;
 
-import lombok.Getter;
 import lombok.ToString;
 
 @ToString
-@Getter
 public class ProductAttribute {
     private final Long id;
     private final String name;
@@ -18,5 +16,17 @@ public class ProductAttribute {
 
     public void changeValue(String newValue) {
         this.value = Validate.notBlank(newValue, "Attribute value");
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

@@ -3,13 +3,11 @@ package com.ecommerce.domain;
 import com.ecommerce.domain.enums.ProductStatus;
 import com.ecommerce.domain.exception.BusinessRuleException;
 import com.ecommerce.domain.valueObjects.*;
-import lombok.Getter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-@Getter
 @ToString
 public class Product {
     private final ProductId id;
@@ -223,5 +221,45 @@ public class Product {
 
     public void changeCategory(Category newCategory) {
         this.category = Validate.notNull(newCategory, "Category");
+    }
+
+    public ProductId getId() {
+        return id;
+    }
+
+    public ProductName getName() {
+        return name;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public ProductPrice getBasePrice() {
+        return basePrice;
+    }
+
+    public VatRate getVatRate() {
+        return basePrice.vatRate();
+    }
+
+    public boolean isConfigurable() {
+        return configurable;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public List<ProductOption> getOptions() {
+        return Collections.unmodifiableList(options);
+    }
+
+    public List<ProductVariant> getVariants() {
+        return Collections.unmodifiableList(variants);
+    }
+
+    public List<ProductAttribute> getAttributes() {
+        return Collections.unmodifiableList(attributes);
     }
 }

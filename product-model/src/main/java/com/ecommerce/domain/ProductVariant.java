@@ -2,14 +2,13 @@ package com.ecommerce.domain;
 
 import com.ecommerce.domain.exception.BusinessRuleException;
 import com.ecommerce.domain.valueObjects.*;
-import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
 @ToString
 public class ProductVariant {
 
@@ -49,5 +48,25 @@ public class ProductVariant {
 
     void applyVatRate(VatRate newRate) {
         this.price = price.withVatRateKeepingGross(newRate);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Sku getSku() {
+        return sku;
+    }
+
+    public ProductPrice getPrice() {
+        return price;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public Set<ProductOptionValue> getOptionValues() {
+        return Collections.unmodifiableSet(optionValues);
     }
 }

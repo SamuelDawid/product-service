@@ -1,13 +1,12 @@
 package com.ecommerce.domain;
 
 import com.ecommerce.domain.exception.BusinessRuleException;
-import lombok.Getter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-@Getter
 @ToString
 public class Category {
 
@@ -46,5 +45,21 @@ public class Category {
             if (c == candidate) return true;
         }
         return false;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public List<Category> getChildren() {
+        return Collections.unmodifiableList(children);
     }
 }

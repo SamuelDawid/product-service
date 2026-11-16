@@ -2,11 +2,9 @@ package com.ecommerce.domain;
 
 import com.ecommerce.domain.valueObjects.PriceDelta;
 import com.ecommerce.domain.valueObjects.VatRate;
-import lombok.Getter;
 import lombok.ToString;
 
 @ToString
-@Getter
 public class ProductOptionValue {
 
     private final Long id;
@@ -29,10 +27,23 @@ public class ProductOptionValue {
         this.priceDelta = Validate.notNull(newDelta, "Price delta");
     }
 
-    /**
-     * Wołane tylko przez Product przy zmianie stawki VAT: brutto zostaje.
-     */
     void applyVatRate(VatRate newRate) {
         this.priceDelta = PriceDelta.fromGross(priceDelta.gross(), newRate);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PriceDelta getPriceDelta() {
+        return priceDelta;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
     }
 }

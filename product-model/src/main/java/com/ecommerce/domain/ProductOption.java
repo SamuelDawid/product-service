@@ -1,15 +1,14 @@
 package com.ecommerce.domain;
 
 import com.ecommerce.domain.exception.BusinessRuleException;
-import lombok.Getter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @ToString
-@Getter
 public class ProductOption {
 
     private final Long id;
@@ -61,5 +60,21 @@ public class ProductOption {
 
     public void changeRequired(boolean required) {
         this.required = required;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public List<ProductOptionValue> getValues() {
+        return Collections.unmodifiableList(values);
     }
 }

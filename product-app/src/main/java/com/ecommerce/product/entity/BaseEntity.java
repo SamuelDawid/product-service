@@ -15,7 +15,7 @@ public class BaseEntity {
     private Long id;
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
         if (effectiveClass(this) != effectiveClass(o)) return false;
@@ -25,7 +25,7 @@ public class BaseEntity {
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return effectiveClass(this).hashCode();
     }
 

@@ -22,4 +22,5 @@ jobs:
           path: |
             **/target/surefire-reports/
             **/target/site/jacoco/jacoco.xml
+            **/target/site/jacoco-aggregate/jacoco.xml
           retention-days: 7

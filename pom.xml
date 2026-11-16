@@ -35,6 +35,16 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>samueldawid</sonar.organization>
         <sonar.projectKey>SamuelDawid_product-service</sonar.projectKey>
+        <sonar.coverage.exclusions>
+            **/entity/**,
+            **/dto/request/**,
+            **/dto/response/**,
+            **/config/**,
+            **/*Application.java
+        </sonar.coverage.exclusions>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${maven.multiModuleProjectDirectory}/product-app/target/site/jacoco-aggregate/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
     <dependencyManagement>
         <dependencies>

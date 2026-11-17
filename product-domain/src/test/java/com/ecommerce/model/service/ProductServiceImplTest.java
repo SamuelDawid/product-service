@@ -10,6 +10,7 @@ import com.ecommerce.model.Category;
 import com.ecommerce.model.PageResult;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.enums.ProductStatus;
+import com.ecommerce.model.exception.BusinessRuleException;
 import com.ecommerce.model.exception.CategoryNotFoundException;
 import com.ecommerce.model.exception.ProductNotFoundException;
 import com.ecommerce.model.mapper.ProductDtoMapper;
@@ -163,6 +164,62 @@ class ProductServiceImplTest {
     }
 
     @Test
+    void givenDraftProduct_whenActivateProduct_thenSavesWithActiveStatus() {
+        // given
+        when(productRepository.findById(new ProductId(1L))).thenReturn(Optional.of(draftLaptop()));
+        ArgumentCaptor<Product> savedProduct = ArgumentCaptor.forClass(Product.class);
+
+        // when
+        productService.activateProduct(1L);
+
+        // then
+        verify(productRepository).save(savedProduct.capture());
+        assertThat(savedProduct.getValue().getStatus()).isEqualTo(ProductStatus.ACTIVE);
+    }
+
+    @Test
+    void givenArchivedProduct_whenActivateProduct_thenThrowsBusinessRuleAndDoesNotSave() {
+        // given
+        when(productRepository.findById(new ProductId(1L)))
+                .thenReturn(Optional.of(laptopWithStatus(ProductStatus.ARCHIVED)));
+
+        // when
+        Throwable thrown = catchThrowable(() -> productService.activateProduct(1L));
+
+        // then
+        assertThat(thrown).isInstanceOf(BusinessRuleException.class);
+        verify(productRepository, never()).save(any());
+    }
+
+
+    @Test
+    void givenArchivedProduct_whenRestoreProduct_thenSavesWithDraftStatus() {
+        // given
+        when(productRepository.findById(new ProductId(1L)))
+                .thenReturn(Optional.of(laptopWithStatus(ProductStatus.ARCHIVED)));
+        ArgumentCaptor<Product> savedProduct = ArgumentCaptor.forClass(Product.class);
+
+        // when
+        productService.restoreProduct(1L);
+
+        // then
+        verify(productRepository).save(savedProduct.capture());
+        assertThat(savedProduct.getValue().getStatus()).isEqualTo(ProductStatus.DRAFT);
+    }
+
+    @Test
+    void givenMissingProduct_whenRestoreProduct_thenThrowsProductNotFound() {
+        // given
+        when(productRepository.findById(new ProductId(42L))).thenReturn(Optional.empty());
+
+        // when
+        Throwable thrown = catchThrowable(() -> productService.restoreProduct(42L));
+
+        // then
+        assertThat(thrown).isInstanceOf(ProductNotFoundException.class);
+    }
+
+    @Test
     void givenExistingProduct_whenArchiveProduct_thenSavesWithArchivedStatus() {
         // given
         when(productRepository.findById(new ProductId(1L))).thenReturn(Optional.of(draftLaptop()));
@@ -177,10 +234,14 @@ class ProductServiceImplTest {
     }
 
     private static Product draftLaptop() {
+        return laptopWithStatus(ProductStatus.DRAFT);
+    }
+
+    private static Product laptopWithStatus(ProductStatus status) {
         return Product.restore(
                 new ProductId(1L),
                 new ProductName("Laptop Pro 14"),
-                ProductStatus.DRAFT,
+                status,
                 ProductPrice.fromGross(new Price(new BigDecimal("4999.99")), VAT_23),
                 false,
                 LAPTOPS,

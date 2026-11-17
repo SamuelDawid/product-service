@@ -182,6 +182,48 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.title").value("Business rule violated"));
     }
 
+    @Test
+    void givenDraftProduct_whenActivateProduct_thenReturns204() throws Exception {
+        // when / then
+        mockMvc.perform(post("/api/products/1/activate"))
+                .andExpect(status().isNoContent());
+
+        verify(productService).activateProduct(1L);
+    }
+
+    @Test
+    void givenArchivedProduct_whenActivateProduct_thenReturns409() throws Exception {
+        // given
+        doThrow(new BusinessRuleException("Archived product can not be activated"))
+                .when(productService).activateProduct(1L);
+
+        // when / then
+        mockMvc.perform(post("/api/products/1/activate"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.detail").value("Archived product can not be activated"));
+    }
+
+
+    @Test
+    void givenArchivedProduct_whenRestoreProduct_thenReturns204() throws Exception {
+        // when / then
+        mockMvc.perform(post("/api/products/1/restore"))
+                .andExpect(status().isNoContent());
+
+        verify(productService).restoreProduct(1L);
+    }
+
+    @Test
+    void givenMissingProduct_whenRestoreProduct_thenReturns404() throws Exception {
+        // given
+        doThrow(new ProductNotFoundException(42L))
+                .when(productService).restoreProduct(42L);
+
+        // when / then
+        mockMvc.perform(post("/api/products/42/restore"))
+                .andExpect(status().isNotFound());
+    }
+
     private static ProductResponse laptopResponse() {
         return new ProductResponse(1L, "Laptop Pro 14", "DRAFT", false,
                 laptopPrice(), new CategoryResponse(5L, "Laptopy"));

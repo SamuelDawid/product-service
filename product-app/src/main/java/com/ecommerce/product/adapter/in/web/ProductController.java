@@ -57,4 +57,16 @@ public class ProductController {
     public void archiveProduct(@PathVariable Long id) {
         productService.archiveProduct(id);
     }
+
+    @PostMapping("/{id}/activate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void activateProduct(@PathVariable Long id) {
+        productService.activateProduct(id);
+    }
+
+    @PostMapping("/{id}/restore")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void restoreProduct(@PathVariable Long id) {
+        productService.restoreProduct(id);
+    }
 }

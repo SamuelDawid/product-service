@@ -42,4 +42,14 @@ public class TransactionalProductService implements ProductService {
     public void archiveProduct(Long id) {
         delegate.archiveProduct(id);
     }
+
+    @Override
+    public void activateProduct(Long id) {
+        delegate.activateProduct(id);
+    }
+
+    @Override
+    public void restoreProduct(Long id) {
+        delegate.restoreProduct(id);
+    }
 }

@@ -18,4 +18,6 @@ public interface ProductService {
     ProductResponse updateProduct(Long id, UpdateProductRequest request);
 
     void archiveProduct(Long id);
+    void activateProduct(Long id);
+    void restoreProduct(Long id);
 }

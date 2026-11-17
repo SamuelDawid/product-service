@@ -74,6 +74,20 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public void activateProduct(Long id) {
+        Product product = loadProduct(id);
+        product.activate();
+        productRepository.save(product);
+    }
+
+    @Override
+    public void restoreProduct(Long id) {
+        Product product = loadProduct(id);
+        product.restore();
+        productRepository.save(product);
+    }
+
     private Product loadProduct(Long id) {
         return productRepository.findById(new ProductId(id))
                 .orElseThrow(() -> new ProductNotFoundException(id));
